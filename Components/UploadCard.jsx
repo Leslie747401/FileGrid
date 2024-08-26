@@ -12,10 +12,8 @@ import Image from 'next/image';
 import Email from '@/public/Email.png'
 import WhatsApp from '@/public/WhatsApp.png'
 import ImageIcon from '@/public/image.png'
-import {WhatsappShareButton , WhatsappIcon , TwitterShareButton , TwitterIcon , FacebookShareButton , FacebookIcon , LinkedinShareButton, LinkedinIcon, RedditShareButton, RedditIcon, EmailShareButton} from 'next-share'
-// import { EmailShareButton } from 'react-share';
-import { useToast } from "@/Components/ui/use-toast"
-import '@/app/globals.css'
+
+import { useToast } from "@/components/ui/use-toast"
 
 import {
   AlertDialog,
@@ -27,7 +25,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+} from '@/components/ui/alert-dialog'
 
 import {
   Dialog,

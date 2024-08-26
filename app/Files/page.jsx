@@ -1,6 +1,6 @@
 import React from 'react'
-import Navbar from '@/Components/Navbar'
-import List from '@/Components/List'
+import Navbar from '@/components/Navbar'
+import List from '@/components/List'
 
 export default function page() {
   return (
