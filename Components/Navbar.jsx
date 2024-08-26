@@ -35,7 +35,7 @@ export default function Navbar() {
             <div className='flex gap-8 items-center'>
 
                 {/* Sign in Button  */}
-                {/* <button className='bg-white rounded-xl flex justify-center h-fit px-3 sm:px-4 py-2 gap-2'>
+                <button className='bg-white rounded-xl flex justify-center h-fit px-3 sm:px-4 py-2 gap-2'>
                     <Image
                         src={Google}
                         alt='Logo'
@@ -44,10 +44,10 @@ export default function Navbar() {
                         className='object-contain'
                     />
                     <p className='text-[16px] sm:text-[18px] font-medium'>Sign in</p>
-                </button> */}
+                </button>
 
                 {/* Circle */}
-                <div className='cursor-pointer' onClick={() => setDropdown(!dropdown)}>
+                {/* <div className='cursor-pointer' onClick={() => setDropdown(!dropdown)}>
                     <Image
                         src={user}
                         alt='Logo'
@@ -55,7 +55,7 @@ export default function Navbar() {
                         height={45}
                         className='rounded-full'
                     />
-                </div>
+                </div> */}
                 
 
             </div>
