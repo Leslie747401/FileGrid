@@ -8,9 +8,9 @@ const plusJakartaSansBold = Plus_Jakarta_Sans({
 
 export default function Heading() {
   return (
-    <div className={`${plusJakartaSansBold.className} w-full flex flex-col items-center gap-8 pb-24`}>
+    <div className={`${plusJakartaSansBold.className} w-full flex flex-col items-center gap-8 pb-24 pt-8`}>
         
-        <div className='text-[20px] sm:text-[55px] font-bold flex flex-col items-center leading-[1.3] text-white'>
+        <div className='text-[22px] sm:text-[55px] font-semibold flex flex-col items-center leading-[1.3] text-[#ffecd1]'>
             {/* <p>Unlock a New Era of File Sharing</p> */}
             {/* <p>with Cutting-Edge Decentralization</p> */}
             <p>Discover a New Era of File Sharing</p>
@@ -20,7 +20,7 @@ export default function Heading() {
 
         <div>
             {/* <p className='text[12px] sm:text-[20px] font-medium text-gray-400 text-center'>Harness the Power of Decentralized Storage with IPFS</p> */}
-            <p className='text[10px] sm:text-[20px] font-medium text-gray-400 text-center'>Leveraging IPFS for Faster and Safer Data Transfers</p>
+            <p className='text[10px] sm:text-[20px] font-medium text-[#8B80F9] text-center'>Leveraging IPFS for Faster and Safer Data Transfers</p>
         </div>
 
     </div>

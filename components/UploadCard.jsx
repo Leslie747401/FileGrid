@@ -9,11 +9,9 @@ import { PinataSDK } from "pinata";
 import Loader from './Loader';
 import copy from '@/public/copy.png'
 import Image from 'next/image';
-import Email from '@/public/Email.png'
-import WhatsApp from '@/public/WhatsApp.png'
+import Email from '@/public/gmail.png'
+import WhatsApp from '@/public/WhatsAppColor.png'
 import ImageIcon from '@/public/image.png'
-
-import { useToast } from '../components/ui/use-toast'
 
 import {
   AlertDialog,
@@ -55,7 +53,6 @@ export default function UploadCard() {
   const [isUploading,setIsUploading] = useState(false);
   const [text,setText] = useState('Upload');
   const [fileLink,setFileLink] = useState("");
-  const { toast } = useToast();
   const [isCopying,setIsCopying] = useState(false);
   
 
@@ -101,19 +98,19 @@ export default function UploadCard() {
     return (
     <div className={`${inter.className} w-full flex flex-col justify-center items-center pb-24 max-sm:px-5`}>
 
-        <div className='max-sm:w-full p-8 bg-[#1e1e1e] rounded-lg flex flex-col gap-6 border border-[#3e3e3e]'>
+        <div className='max-sm:w-full p-8 bg-[#8B80F9] rounded-lg flex flex-col gap-6'>
 
-            <p className='flex justify-start w-full font-medium text-white text-xl'>Upload File</p>
+            <p className='flex justify-start w-full font-medium text-xl text-white'>Upload File</p>
 
             <input type="file" className='hidden uploadImage' accept='image/*' onChange={handleFile} disabled={fileName} required/>
 
-            <div className='w-full sm:w-[450px] h-[250px] bg-[#2f2f2f] rounded-xl border border-[#5d5d5d] border-dashed flex flex-col justify-center items-center gap-4 cursor-pointer relative' onClick={handleUploadClick}>
+            <div className='w-full sm:w-[450px] h-[250px] bg-[#ffecd1] rounded-xl border-[2px] border-gray-500 border-dashed flex flex-col justify-center items-center gap-4 cursor-pointer relative' onClick={handleUploadClick}>
 
               {
                 fileName ? 
                 
                   <>
-                    <div className='sm:w-[75%] px-4 py-2 rounded-xl bg-blue-200 flex gap-2 items-center'>
+                    <div className='sm:w-[75%] px-4 py-2 rounded-xl bg-white flex gap-2 items-center'>
                       <Image
                         src={ImageIcon}
                         width={25}
@@ -131,8 +128,10 @@ export default function UploadCard() {
                 
                 :     
                   <>
-                    <Upload className='text-gray-400'/>
-                    <p className='text-[#575757] text-center'>Drag and drop or <br className='sm:hidden'/><span className='text-blue-500'>browse files</span></p>
+                    <Upload/>
+                    <p className='text-[#575757] text-center'>Drag and drop or <br className='sm:hidden'/>
+                    <span className='text-blue-500'>browse files</span>
+                    </p>
                   </>
               }
 
@@ -145,7 +144,7 @@ export default function UploadCard() {
                       file == "" ?
 
                       <AlertDialog>
-                        <AlertDialogTrigger className='bg-white text-black text-lg font-medium w-[48%] py-2 rounded-lg flex gap-2 justify-center items-center'>Upload</AlertDialogTrigger>
+                        <AlertDialogTrigger className='bg-white text-lg font-medium w-[48%] py-2 rounded-lg flex gap-2 justify-center items-center'>Upload</AlertDialogTrigger>
                         <AlertDialogContent>
                           <AlertDialogHeader>
                             <AlertDialogTitle>Missing File</AlertDialogTitle>
@@ -166,7 +165,7 @@ export default function UploadCard() {
                     ( 
                       isUploading ?
 
-                      <button className='bg-white text-black text-lg font-medium w-[48%] py-2 rounded-lg flex justify-center'>
+                      <button className='bg-white text-lg font-medium w-[48%] py-2 rounded-lg flex justify-center'>
                         <Loader/>
                       </button> 
 
@@ -193,7 +192,7 @@ export default function UploadCard() {
                   {  file == "" ?
 
                         <AlertDialog>
-                          <AlertDialogTrigger className='bg-blue-600 text-white text-lg font-medium w-[48%] py-2 rounded-lg'>Share</AlertDialogTrigger>
+                          <AlertDialogTrigger className='bg-black text-white text-lg font-medium w-[48%] py-2 rounded-lg'>Share</AlertDialogTrigger>
                           <AlertDialogContent>
                             <AlertDialogHeader>
                               <AlertDialogTitle>Upload Required</AlertDialogTitle>
@@ -212,7 +211,7 @@ export default function UploadCard() {
                     (  text == 'Upload' ?
 
                         <AlertDialog>
-                          <AlertDialogTrigger className='bg-blue-600 text-white text-lg font-medium w-[48%] py-2 rounded-lg'>Share</AlertDialogTrigger>
+                          <AlertDialogTrigger className='bg-black text-white text-lg font-medium w-[48%] py-2 rounded-lg'>Share</AlertDialogTrigger>
                           <AlertDialogContent>
                             <AlertDialogHeader>
                               <AlertDialogTitle>Upload Required</AlertDialogTitle>
@@ -230,30 +229,30 @@ export default function UploadCard() {
 
                         <Dialog>
 
-                          <DialogTrigger className='bg-blue-600 text-white text-lg font-medium w-[48%] py-2 rounded-lg'>Share</DialogTrigger>
+                          <DialogTrigger className='bg-black text-white text-lg font-medium w-[48%] py-2 rounded-lg'>Share</DialogTrigger>
 
                           <DialogContent>
                               
                               <div className='flex justify-between items-start'>
 
                                   <div>
-                                    <p className='text-lg font-semibold text-white'>Share with others</p>
+                                    <p className='text-lg font-semibold'>Share with others</p>
                                     <p className={`${inter.className} text-sm text-gray-400 pb-6`}>Anyone with link can view this file</p>
                                   </div>
 
-                                  <DialogClose><X className='text-white'/></DialogClose>    
+                                  <DialogClose><X/></DialogClose>    
 
                               </div>
 
 
-                              <div className='flex justify-between pb-6 w-full'>
+                              <div className='flex justify-between mb-4 w-full'>
        
                                 <Link href={`https://wa.me/?text=${"File name - " + fileName + " and the link to access this file - " +  fileLink}`} target="_blank" rel="noopener noreferrer" className='w-[48%]'>
-                                  <button className='w-full text-white font-medium border border-[#1a1a1a] flex justify-center rounded-lg gap-3 items-center p-2'>
+                                  <button className='w-full font-medium border border-[#d1d1d1] flex justify-center rounded-lg gap-3 items-center p-2'>
                                     <Image
                                       src={WhatsApp}
-                                      width={20}
-                                      height={20}
+                                      width={25}
+                                      height={25}
                                       alt='WhatsApp_logo'
                                     />
                                     <p>WhatsApp</p>
@@ -261,11 +260,11 @@ export default function UploadCard() {
                                 </Link>
 
                                 <Link href={`mailto:?subject=${encodeURIComponent("Testing File Share")}&body=${"File name - " + fileName + " and the link to access this file - " +  fileLink}`} className='w-[48%]'>
-                                  <button className='w-full text-white font-medium border border-[#1a1a1a] flex justify-center gap-3 p-2 rounded-lg items-center'>
+                                  <button className='w-full font-medium border border-[#d1d1d1] flex justify-center gap-3 p-2 rounded-lg items-center'>
                                     <Image
                                       src={Email}
-                                      idth={20}
-                                      height={20}
+                                      idth={22}
+                                      height={22}
                                       alt='email_logo'
                                     />
                                     <p>Email</p>
@@ -274,19 +273,19 @@ export default function UploadCard() {
 
                               </div>
 
-                              <div className='flex justify-between items-center pb-8'>
-                                <div className='border border-[#1a1a1a] w-[43%] h-0'></div>
-                                <p className='text-white flex justify-center'>or</p>
-                                <div className='border border-[#1a1a1a] w-[43%] h-0'></div>
+                              <div className='flex justify-between items-center pb-4'>
+                                <div className='border border-[#d1d1d1] w-[43%] h-0'></div>
+                                <p className='flex justify-center'>or</p>
+                                <div className='border border-[#d1d1d1] w-[43%] h-0'></div>
                               </div>
 
                               <div className='flex items-center justify-between'>
 
-                                <div className='w-[285px] sm:w-[415px] text-white border border-[#1a1a1a] h-[40px] rounded-lg p-2 px-3 text-sm  overflow-hidden whitespace-nowrap text-ellipsis'>
+                                <div className='w-[285px] sm:w-[415px] border border-[#d1d1d1] h-[40px] rounded-lg p-2 px-3 text-sm  overflow-hidden whitespace-nowrap text-ellipsis'>
                                   {fileLink}
                                 </div>
 
-                                <button className='p-[6px] bg-white rounded-md' onClick={copyurl}>
+                                <button className='p-[8px] rounded-md border border-[#d1d1d1]' onClick={copyurl}>
                                   {
                                     isCopying ? 
 
@@ -306,8 +305,8 @@ export default function UploadCard() {
                               </div>
 
                           </DialogContent>
-                        </Dialog>
 
+                        </Dialog>
                      )
                   }
 

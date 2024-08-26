@@ -19,10 +19,8 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={plusJakartaSansBold.className}>
-      <div className="absolute inset-0 -z-10 min-h-max min-w-max items-center [background:radial-gradient(125%_125%_at_50%_10%,#000_40%,#63e_100%)]">
-          {children}
-        </div>
+      <body className={`${plusJakartaSansBold.className} bg-black`}>
+      <div className="absolute inset-0 -z-10 h-full w-full bg-black"><div className="absolute inset-0 -z-10 bg-[linear-gradient(to_right,#272727_1px,transparent_1px),linear-gradient(to_bottom,#272727_1px,transparent_1px)] bg-[size:30px_30px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_220%)]"></div>{children}</div>
         <Toaster />
       </body>
     </html>
