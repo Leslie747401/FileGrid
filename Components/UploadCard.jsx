@@ -13,7 +13,7 @@ import Email from '@/public/Email.png'
 import WhatsApp from '@/public/WhatsApp.png'
 import ImageIcon from '@/public/image.png'
 
-import { useToast } from "@/components/ui/use-toast"
+import { useToast } from '../components/ui/use-toast'
 
 import {
   AlertDialog,

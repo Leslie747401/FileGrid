@@ -1,6 +1,6 @@
-import Navbar from "@/components/Navbar";
-import Heading from "@/components/Heading";
-import UploadCard from "@/components/UploadCard";
+import Navbar from "../components/Navbar";
+import Heading from '../components/Heading';
+import UploadCard from "../components/UploadCard";
 
 export default function Home() {
   return (
