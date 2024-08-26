@@ -38,6 +38,7 @@ import {
   DialogClose,
   DialogTrigger,
 } from "@/components/ui/dialog"
+
 import Link from 'next/link';
 
 
@@ -151,7 +152,7 @@ export default function UploadCard() {
                           <AlertDialogHeader>
                             <AlertDialogTitle>Missing File</AlertDialogTitle>
                             <AlertDialogDescription>
-                              It looks like you didn't select a file. Please choose a file to upload.
+                              It looks like you did not select a file. Please choose a file to upload.
                             </AlertDialogDescription>
                           </AlertDialogHeader>
                           <AlertDialogFooter>
@@ -218,7 +219,7 @@ export default function UploadCard() {
                             <AlertDialogHeader>
                               <AlertDialogTitle>Upload Required</AlertDialogTitle>
                               <AlertDialogDescription>
-                              You have selected a file, but it hasn't been uploaded yet. Please upload the file before sharing.
+                              You have selected a file, but it has not been uploaded yet. Please upload the file before sharing.
                               </AlertDialogDescription>
                             </AlertDialogHeader>
                             <AlertDialogFooter>
