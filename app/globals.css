@@ -141,6 +141,7 @@
     }
   }
 
-.reset {
-  all:unset;
+.underline-white:hover {
+  text-decoration: underline;
+  text-decoration-color: white;
 }

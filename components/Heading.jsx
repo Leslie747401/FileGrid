@@ -10,7 +10,7 @@ export default function Heading() {
   return (
     <div className={`${plusJakartaSansBold.className} w-full flex flex-col items-center gap-8 pb-24 pt-8`}>
         
-        <div className='text-[22px] sm:text-[55px] font-semibold flex flex-col items-center leading-[1.3] text-[#ffecd1]'>
+        <div className='text-[22px] sm:text-[55px] font-semibold flex flex-col items-center leading-[1.3] text-[#ffe8c7]'>
             {/* <p>Unlock a New Era of File Sharing</p> */}
             {/* <p>with Cutting-Edge Decentralization</p> */}
             <p>Discover a New Era of File Sharing</p>

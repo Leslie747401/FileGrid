@@ -7,16 +7,13 @@ import { Check } from 'lucide-react';
 import { X } from 'lucide-react';
 import { PinataSDK } from "pinata";
 import Loader from './Loader';
-import copy from '@/public/copy.png'
 import Image from 'next/image';
-import Email from '@/public/gmail.png'
-import WhatsApp from '@/public/WhatsAppColor.png'
 import ImageIcon from '@/public/image.png'
+import ShareSingleFile from './ShareSingleFile';
 
 import {
   AlertDialog,
   AlertDialogAction,
-  AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
   AlertDialogFooter,
@@ -24,20 +21,6 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
-
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogClose,
-  DialogTrigger,
-} from "@/components/ui/dialog"
-
-import Link from 'next/link';
-
-
 
 const pinata = new PinataSDK({
   pinataJwt: process.env.NEXT_PUBLIC_PINATA_JWT,
@@ -53,7 +36,6 @@ export default function UploadCard() {
   const [isUploading,setIsUploading] = useState(false);
   const [text,setText] = useState('Upload');
   const [fileLink,setFileLink] = useState("");
-  const [isCopying,setIsCopying] = useState(false);
   
 
   const handleUploadClick = () => {
@@ -83,11 +65,6 @@ export default function UploadCard() {
 
   function copyurl(){
     navigator.clipboard.writeText(fileLink);
-    // toast({
-    //   description: "Link copied to clipboard",
-    //   duration : 1000,
-    //   className : 'bg-black text-white font-medium outline-[#1e1e1e]'
-    // });
 
     setIsCopying(true);
     setTimeout(() => {
@@ -102,15 +79,15 @@ export default function UploadCard() {
 
             <p className='flex justify-start w-full font-medium text-xl text-white'>Upload File</p>
 
-            <input type="file" className='hidden uploadImage' accept='image/*' onChange={handleFile} disabled={fileName} required/>
+            <input type="file" className='hidden uploadImage' accept='image/* .pdf' onChange={handleFile} disabled={fileName} required/>
 
-            <div className='w-full sm:w-[450px] h-[250px] bg-[#ffecd1] rounded-xl border-[2px] border-gray-500 border-dashed flex flex-col justify-center items-center gap-4 cursor-pointer relative' onClick={handleUploadClick}>
+            <div className='w-full sm:w-[450px] h-[250px] bg-white rounded-xl flex flex-col justify-center items-center gap-4 cursor-pointer relative' onClick={handleUploadClick}>
 
               {
                 fileName ? 
                 
                   <>
-                    <div className='sm:w-[75%] px-4 py-2 rounded-xl bg-white flex gap-2 items-center'>
+                    <div className='sm:w-[75%] px-4 py-2 rounded-xl border border-[#d0d0d0] flex gap-2 items-center'>
                       <Image
                         src={ImageIcon}
                         width={25}
@@ -144,7 +121,7 @@ export default function UploadCard() {
                       file == "" ?
 
                       <AlertDialog>
-                        <AlertDialogTrigger className='bg-white text-lg font-medium w-[48%] py-2 rounded-lg flex gap-2 justify-center items-center'>Upload</AlertDialogTrigger>
+                        <AlertDialogTrigger className='bg-[#ffe1b7] text-lg font-medium w-[48%] py-2 rounded-lg flex gap-2 justify-center items-center'>Upload</AlertDialogTrigger>
                         <AlertDialogContent>
                           <AlertDialogHeader>
                             <AlertDialogTitle>Missing File</AlertDialogTitle>
@@ -165,7 +142,7 @@ export default function UploadCard() {
                     ( 
                       isUploading ?
 
-                      <button className='bg-white text-lg font-medium w-[48%] py-2 rounded-lg flex justify-center'>
+                      <button className='bg-[#ffe1b7] text-lg font-medium w-[48%] py-2 rounded-lg flex justify-center'>
                         <Loader/>
                       </button> 
 
@@ -175,13 +152,13 @@ export default function UploadCard() {
                       (
                         text == 'Upload' ?
 
-                        <button className='bg-white text-black text-lg font-medium w-[48%] py-2 rounded-lg flex gap-2 justify-center items-center' onClick={uploadFile}>
+                        <button className='bg-[#ffe1b7] text-black text-lg font-medium w-[48%] py-2 rounded-lg flex gap-2 justify-center items-center' onClick={uploadFile}>
                             <p>Upload</p>
                         </button>
 
                       :
 
-                        <button className='bg-white text-black text-lg font-medium w-[48%] py-2 rounded-lg flex gap-2 justify-center items-center pointer-events-none'>
+                        <button className='bg-[#ffe1b7] text-black text-lg font-medium w-[48%] py-2 rounded-lg flex gap-2 justify-center items-center pointer-events-none'>
                           <p>Uploaded</p>
                           <Check/>
                         </button>
@@ -227,86 +204,11 @@ export default function UploadCard() {
 
                       :
 
-                        <Dialog>
-
-                          <DialogTrigger className='bg-black text-white text-lg font-medium w-[48%] py-2 rounded-lg'>Share</DialogTrigger>
-
-                          <DialogContent>
-                              
-                              <div className='flex justify-between items-start'>
-
-                                  <div>
-                                    <p className='text-lg font-semibold'>Share with others</p>
-                                    <p className={`${inter.className} text-sm text-gray-400 pb-6`}>Anyone with link can view this file</p>
-                                  </div>
-
-                                  <DialogClose><X/></DialogClose>    
-
-                              </div>
-
-
-                              <div className='flex justify-between mb-4 w-full'>
-       
-                                <Link href={`https://wa.me/?text=${"File name - " + fileName + " and the link to access this file - " +  fileLink}`} target="_blank" rel="noopener noreferrer" className='w-[48%]'>
-                                  <button className='w-full font-medium border border-[#d1d1d1] flex justify-center rounded-lg gap-3 items-center p-2'>
-                                    <Image
-                                      src={WhatsApp}
-                                      width={25}
-                                      height={25}
-                                      alt='WhatsApp_logo'
-                                    />
-                                    <p>WhatsApp</p>
-                                  </button>
-                                </Link>
-
-                                <Link href={`mailto:?subject=${encodeURIComponent("Testing File Share")}&body=${"File name - " + fileName + " and the link to access this file - " +  fileLink}`} className='w-[48%]'>
-                                  <button className='w-full font-medium border border-[#d1d1d1] flex justify-center gap-3 p-2 rounded-lg items-center'>
-                                    <Image
-                                      src={Email}
-                                      idth={22}
-                                      height={22}
-                                      alt='email_logo'
-                                    />
-                                    <p>Email</p>
-                                  </button>
-                                </Link>
-
-                              </div>
-
-                              <div className='flex justify-between items-center pb-4'>
-                                <div className='border border-[#d1d1d1] w-[43%] h-0'></div>
-                                <p className='flex justify-center'>or</p>
-                                <div className='border border-[#d1d1d1] w-[43%] h-0'></div>
-                              </div>
-
-                              <div className='flex items-center justify-between'>
-
-                                <div className='w-[285px] sm:w-[415px] border border-[#d1d1d1] h-[40px] rounded-lg p-2 px-3 text-sm  overflow-hidden whitespace-nowrap text-ellipsis'>
-                                  {fileLink}
-                                </div>
-
-                                <button className='p-[8px] rounded-md border border-[#d1d1d1]' onClick={copyurl}>
-                                  {
-                                    isCopying ? 
-
-                                      <Check width={20} height={20}/>
-
-                                    : 
-
-                                      <Image
-                                        src={copy}
-                                        width={20}
-                                        height={20}
-                                        alt='copy_logo'
-                                      />
-                                  }
-                                </button>
-
-                              </div>
-
-                          </DialogContent>
-
-                        </Dialog>
+                        <ShareSingleFile
+                          Filename={fileName}
+                          Filelink={fileLink}
+                        />
+                        
                      )
                   }
 

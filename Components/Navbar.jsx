@@ -19,6 +19,8 @@ export default function Navbar() {
     <>
         <div className='w-full flex pt-8 sm:pt-12 pb-16 sm:pb-16 justify-between'>
             
+            {/* Image and Name */}
+
             <Link href={'/'}>
                 <div className='flex gap-3.5 sm:gap-5 items-center'>
                     <Image
@@ -31,6 +33,8 @@ export default function Navbar() {
                     <p className='text-[20px] sm:text-[30px] font-bold text-white flex justify-center'>FileGrid</p>
                 </div>
             </Link>
+
+            {/* Sign in and profile button */}
 
             <div className='flex gap-8 items-center'>
 
@@ -46,7 +50,7 @@ export default function Navbar() {
                     <p className='text-[16px] sm:text-[18px] font-medium'>Sign in</p>
                 </button>
 
-                {/* Circle */}
+                {/* Profile Button */}
                 {/* <div className='cursor-pointer' onClick={() => setDropdown(!dropdown)}>
                     <Image
                         src={user}
@@ -61,6 +65,9 @@ export default function Navbar() {
             </div>
 
         </div>
+
+
+        {/* Dropdown Menu */}
 
         {
             dropdown  && 
