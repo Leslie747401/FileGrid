@@ -67,7 +67,7 @@ export default function List() {
     <>
 
         {
-            files ?
+            files.length != 0 ?
             
 
             <div className='w-full sm:w-[50%] max-sm:pb-12 sm:h-screen'>

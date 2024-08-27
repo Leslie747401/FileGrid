@@ -164,7 +164,7 @@ export default function UploadCard() {
                         </button>
                       )
                     )
-                  }
+                  } 
 
                   {  file == "" ?
 
