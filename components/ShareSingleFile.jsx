@@ -25,6 +25,7 @@ export default function ShareSingleFile(props) {
   const [isCopying,setIsCopying] = useState(false);
 
   function copyurl(){
+    console.log(props.Filelink);
     navigator.clipboard.writeText(props.Filelink);
 
     setIsCopying(true);
@@ -33,11 +34,13 @@ export default function ShareSingleFile(props) {
     }, 1000);
   }
 
+  
+
   return (
 
     <Dialog>
 
-        <DialogTrigger className='bg-black text-white text-lg font-medium w-[48%] py-2 rounded-lg'>Share</DialogTrigger>
+        <DialogTrigger className='bg-black text-white text-lg font-medium w-full py-2 rounded-lg'>Share</DialogTrigger>
 
         <DialogContent>
             

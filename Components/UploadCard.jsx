@@ -36,6 +36,7 @@ export default function UploadCard() {
   const [isUploading,setIsUploading] = useState(false);
   const [text,setText] = useState('Upload');
   const [fileLink,setFileLink] = useState("");
+  const [fileStatus,setFileStatus] = useState("Upload Pending");
   
 
   const handleUploadClick = () => {
@@ -57,19 +58,10 @@ export default function UploadCard() {
     
     if(upload) {
       setIsUploading(false)
-      console.log(upload);
+      setFileStatus("Uploaded");
       setText('Uploaded');
       setFileLink(`https://${process.env.NEXT_PUBLIC_PINATA_GATEWAY}/ipfs/${upload.IpfsHash}`);
     }
-  }
-
-  function copyurl(){
-    navigator.clipboard.writeText(fileLink);
-
-    setIsCopying(true);
-    setTimeout(() => {
-      setIsCopying(false);
-    }, 1000);
   }
 
     return (
@@ -116,12 +108,11 @@ export default function UploadCard() {
 
             <div className='flex justify-between'>
 
-                  {/* When the file is not selected before uploading  */}
-                  {
+                    {
                       file == "" ?
 
                       <AlertDialog>
-                        <AlertDialogTrigger className='bg-[#ffe1b7] text-lg font-medium w-[48%] py-2 rounded-lg flex gap-2 justify-center items-center'>Upload</AlertDialogTrigger>
+                        <AlertDialogTrigger className='bg-black text-white text-lg font-medium w-full py-2 rounded-lg flex gap-2 justify-center items-center'>Upload</AlertDialogTrigger>
                         <AlertDialogContent>
                           <AlertDialogHeader>
                             <AlertDialogTitle>Missing File</AlertDialogTitle>
@@ -131,87 +122,41 @@ export default function UploadCard() {
                           </AlertDialogHeader>
                           <AlertDialogFooter>
                             <AlertDialogAction>Got it</AlertDialogAction>
-                          </AlertDialogFooter>
+                          </AlertDialogFooter> 
                         </AlertDialogContent>
                       </AlertDialog>
 
                     :
 
-                    // Checking whether the file is being uploaded or not.
-
-                    ( 
-                      isUploading ?
-
-                      <button className='bg-[#ffe1b7] text-lg font-medium w-[48%] py-2 rounded-lg flex justify-center'>
-                        <Loader/>
-                      </button> 
-
-                      :
-                      
-                      // If the file is not being uploaded, then it has either completed the upload or hasnt been uploaded. So if the file is not been uploaded we display "Upload" else we display "Uploaded"
                       (
-                        text == 'Upload' ?
+                        isUploading ?
 
-                        <button className='bg-[#ffe1b7] text-black text-lg font-medium w-[48%] py-2 rounded-lg flex gap-2 justify-center items-center' onClick={uploadFile}>
-                            <p>Upload</p>
-                        </button>
+                          <button className='bg-black text-white text-lg font-medium w-full py-2 rounded-lg flex justify-center'>
+                            <Loader/>
+                          </button> 
 
-                      :
+                        :
 
-                        <button className='bg-[#ffe1b7] text-black text-lg font-medium w-[48%] py-2 rounded-lg flex gap-2 justify-center items-center pointer-events-none'>
-                          <p>Uploaded</p>
-                          <Check/>
-                        </button>
+                          (
+                            fileStatus == "Upload Pending" ?
+
+                              <button className='bg-black text-white text-lg font-medium w-full py-2 rounded-lg flex gap-2 justify-center items-center' onClick={uploadFile}>
+                                <p>Upload</p>
+                              </button>
+
+                            :
+                            
+                              <>
+                                <ShareSingleFile
+                                  Filename={fileName}
+                                  Filelink={fileLink}
+                                />
+                              </>
+                          )
                       )
-                    )
-                  } 
 
-                  {  file == "" ?
-
-                        <AlertDialog>
-                          <AlertDialogTrigger className='bg-black text-white text-lg font-medium w-[48%] py-2 rounded-lg'>Share</AlertDialogTrigger>
-                          <AlertDialogContent>
-                            <AlertDialogHeader>
-                              <AlertDialogTitle>Upload Required</AlertDialogTitle>
-                              <AlertDialogDescription>
-                              To share a file, you must upload one first. Please select and upload a file to continue.
-                              </AlertDialogDescription>
-                            </AlertDialogHeader>
-                            <AlertDialogFooter>
-                              <AlertDialogAction>Got it</AlertDialogAction>
-                            </AlertDialogFooter>
-                          </AlertDialogContent>
-                        </AlertDialog>
-
-                    : 
-
-                    (  text == 'Upload' ?
-
-                        <AlertDialog>
-                          <AlertDialogTrigger className='bg-black text-white text-lg font-medium w-[48%] py-2 rounded-lg'>Share</AlertDialogTrigger>
-                          <AlertDialogContent>
-                            <AlertDialogHeader>
-                              <AlertDialogTitle>Upload Required</AlertDialogTitle>
-                              <AlertDialogDescription>
-                              You have selected a file, but it has not been uploaded yet. Please upload the file before sharing.
-                              </AlertDialogDescription>
-                            </AlertDialogHeader>
-                            <AlertDialogFooter>
-                              <AlertDialogAction>Got it</AlertDialogAction>
-                            </AlertDialogFooter>
-                          </AlertDialogContent>
-                        </AlertDialog>                        
-
-                      :
-
-                        <ShareSingleFile
-                          Filename={fileName}
-                          Filelink={fileLink}
-                        />
-                        
-                     )
-                  }
-
+                    }
+                  
             </div>
 
         </div>
