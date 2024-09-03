@@ -6,31 +6,33 @@ import logo1 from '@/public/logo1.png'
 import logo2 from '@/public/logo2.png'
 import user from '@/public/User.avif'
 import Google from '@/public/Google.png'
-import { ArrowUpRight } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
 import { signInWithGoogle } from '@/lib/auth-actions';
-import { useRouter } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
 import { signout } from "@/lib/auth-actions";
 import { useEffect } from "react";
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
 
 
 export default function Navbar() {
 
   const [dropdown,setDropdown] = useState(false);
   const [user, setUser] = useState(null);
-  const router = useRouter();
   const supabase = createClient();
+  const [isLoading,setIsLoading] = useState(false);
 
   useEffect(() => {
 
     const fetchUser = async () => {
       
+        setIsLoading(true);
         const { data } = await supabase.auth.getUser();
 
         if(data) {
             setUser(data?.user?.user_metadata?.avatar_url);
+            setIsLoading(false)
         }
     };
 
@@ -62,37 +64,50 @@ export default function Navbar() {
             <div className='flex gap-8 items-center'>
 
                 {
-                    user ? 
-
-                    <>
-                        {/* Profile */}
-                        <button className='cursor-pointer' onClick={() => setDropdown(!dropdown)}>
-                            <Image
-                                src={user}
-                                alt='Logo'
-                                width={45}
-                                height={45}
-                                className='rounded-full'
-                            />
-                        </button>
-
-                    </>
+                    isLoading ? 
+                        
+                        <Skeleton width={50} height={50} circle/>
 
                     :
 
-                    <>
-                        {/* Sign in Button  */}
-                        <button className='bg-white rounded-xl flex justify-center h-fit px-3 sm:px-4 py-2 gap-2' onClick={() => signInWithGoogle()}>
-                            <Image
-                                src={Google}
-                                alt='Logo'
-                                width={28}
-                                height={28}
-                                className='object-contain'
-                            />
-                            <p className='text-[16px] sm:text-[18px] font-medium'>Sign in</p>
-                        </button>
-                    </>
+                    (
+                        user ? 
+
+                        <>
+                            {/* Profile */}
+                            <button className='cursor-pointer' onClick={() => setDropdown(!dropdown)}>
+                                <Image
+                                    src={user}
+                                    alt='Logo'
+                                    width={45}
+                                    height={45}
+                                    className='rounded-full'
+                                />
+                            </button>
+
+                        </>
+
+                        :
+
+                        <>
+                            {/* Sign in Button  */}
+                            <button className='bg-white rounded-xl flex justify-center h-fit px-3 sm:px-4 py-2 gap-2' onClick={() => {
+                                signInWithGoogle();
+                                setIsLoading(true);
+                            }
+                            }>
+                                <Image
+                                    src={Google}
+                                    alt='Logo'
+                                    width={28}
+                                    height={28}
+                                    className='object-contain'
+                                />
+                                <p className='text-[16px] sm:text-[18px] font-medium'>Sign in</p>
+                            </button>
+
+                        </>
+                    )
                 }
                 
 

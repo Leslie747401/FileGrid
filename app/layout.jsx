@@ -1,6 +1,7 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { Toaster } from '../components/ui/toaster'
+import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,10 +20,12 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`${plusJakartaSansBold.className} bg-black`}>
-      <div className="absolute inset-0 -z-10 h-full w-full bg-black"><div className="absolute inset-0 -z-10 bg-[linear-gradient(to_right,#272727_1px,transparent_1px),linear-gradient(to_bottom,#272727_1px,transparent_1px)] bg-[size:30px_30px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_220%)]"></div>{children}</div>
-        <Toaster />
-      </body>
+      <SkeletonTheme baseColor="#202020" highlightColor="#444">
+        <body className={`${plusJakartaSansBold.className} bg-black`}>
+        <div className="absolute inset-0 -z-10 h-full w-full bg-black"><div className="absolute inset-0 -z-10 bg-[linear-gradient(to_right,#272727_1px,transparent_1px),linear-gradient(to_bottom,#272727_1px,transparent_1px)] bg-[size:30px_30px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_220%)]"></div>{children}</div>
+          <Toaster />
+        </body>
+      </SkeletonTheme>
     </html>
   );
 }
