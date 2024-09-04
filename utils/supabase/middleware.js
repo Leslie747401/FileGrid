@@ -54,7 +54,13 @@ export async function updateSession(request) {
     }
   )
 
-  await supabase.auth.getUser()
+  // Protecting the Files route.
+  
+  const user = await supabase.auth.getUser()
 
-  return response
+  if (request.nextUrl.pathname.startsWith('/Files') && user.error) {
+      return NextResponse.redirect(new URL('/', request.url))
+  }
+
+  return response;
 }

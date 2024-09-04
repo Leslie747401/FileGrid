@@ -3,8 +3,6 @@
 import React from 'react'
 import Image from 'next/image'
 import logo1 from '@/public/logo1.png'
-import logo2 from '@/public/logo2.png'
-import user from '@/public/User.avif'
 import Google from '@/public/Google.png'
 import Link from 'next/link';
 import { useState } from 'react';
