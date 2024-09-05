@@ -32,7 +32,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export default function UploadCard() {
 
-  const [file,setFile] = useState("");
+  const [file,setFile] = useState(null);
   const [fileName,setFileName] = useState("");
   const [isUploading,setIsUploading] = useState(false);
   const [fileLink,setFileLink] = useState("");
@@ -108,7 +108,7 @@ export default function UploadCard() {
                       <Check width={22} height={22} className='pt-1'/>
                     </div>
 
-                    <div className='w-8 h-8 absolute top-4 right-4 rounded-full cursor-pointer bg-black flex justify-center items-center ' onClick={() => {setFileName(false); setFile("");}}>
+                    <div className='w-8 h-8 absolute top-4 right-4 rounded-full cursor-pointer bg-black flex justify-center items-center ' onClick={() => {setFileName(false); setFile(null); setFileStatus("Upload Pending")}}>
                       <X className='text-white'/>
                     </div>
                   </>
