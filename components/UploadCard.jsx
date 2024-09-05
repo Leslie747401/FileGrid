@@ -21,6 +21,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
+import { createClient } from '@/utils/supabase/client';
 
 const pinata = new PinataSDK({
   pinataJwt: process.env.NEXT_PUBLIC_PINATA_JWT,
@@ -34,10 +35,9 @@ export default function UploadCard() {
   const [file,setFile] = useState("");
   const [fileName,setFileName] = useState("");
   const [isUploading,setIsUploading] = useState(false);
-  const [text,setText] = useState('Upload');
   const [fileLink,setFileLink] = useState("");
   const [fileStatus,setFileStatus] = useState("Upload Pending");
-  
+  const supabase = createClient();
 
   const handleUploadClick = () => {
     const upload_image = document.querySelector('.uploadImage');
@@ -55,11 +55,29 @@ export default function UploadCard() {
     setIsUploading(true);
     
     const upload = await pinata.upload.file(file);
+    const { data: { user } } = await supabase.auth.getUser();
     
-    if(upload) {
+    // if the file is uploaded to IPFS and the user is authenticated then we can update the required states to share the file. The necessary details of the user and the hash of the file will be stored in the supabase database. 
+
+    if(upload && user) {
+
       setIsUploading(false)
       setFileStatus("Uploaded");
-      setText('Uploaded');
+      setFileLink(`https://${process.env.NEXT_PUBLIC_PINATA_GATEWAY}/ipfs/${upload.IpfsHash}`);
+
+      const { data, error } = await supabase
+      .from('Files')
+      .insert([
+        { file_name: fileName, file_hash: upload.IpfsHash, email: user.email},
+      ])
+      .select();
+
+    }
+
+    // If the user is not logged in then we only update the required states to share the file. This file will be stored in the IPFS but not in the supabase database as i have enabled row level security (RLS) to restrict unauthenticated users to upload files to supabase database because we cannot track the user. 
+    else if(upload && !user){
+      setIsUploading(false)
+      setFileStatus("Uploaded");
       setFileLink(`https://${process.env.NEXT_PUBLIC_PINATA_GATEWAY}/ipfs/${upload.IpfsHash}`);
     }
   }
