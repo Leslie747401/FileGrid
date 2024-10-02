@@ -53,32 +53,36 @@ export default function UploadCard() {
   const uploadFile = async () => {
 
     setIsUploading(true);
-    
-    const upload = await pinata.upload.file(file);
+
     const { data: { user } } = await supabase.auth.getUser();
-    
-    // if the file is uploaded to IPFS and the user is authenticated then we can update the required states to share the file. The necessary details of the user and the hash of the file will be stored in the supabase database. 
 
-    if(upload && user) {
+      // if the file is uploaded to IPFS and the user is authenticated then we can update the required states to share the file and we can store the email id of the person with file in the IPFS.
 
-      setIsUploading(false)
-      setFileStatus("Uploaded");
-      setFileLink(`https://${process.env.NEXT_PUBLIC_PINATA_GATEWAY}/ipfs/${upload.IpfsHash}`);
+    if(user){
 
-      const { data, error } = await supabase
-      .from('Files')
-      .insert([
-        { file_name: fileName, file_hash: upload.IpfsHash, email: user.email},
-      ])
-      .select();
+      const upload = await pinata.upload.file(file).addMetadata({
+        keyValues: {
+          email : user.email
+        }
+      });
 
+      if(upload){
+        setIsUploading(false)
+        setFileStatus("Uploaded");
+        setFileLink(`https://${process.env.NEXT_PUBLIC_PINATA_GATEWAY}/ipfs/${upload.IpfsHash}`);
+      }
     }
 
-    // If the user is not logged in then we only update the required states to share the file. This file will be stored in the IPFS but not in the supabase database as i have enabled row level security (RLS) to restrict unauthenticated users to upload files to supabase database because we cannot track the user. 
-    else if(upload && !user){
-      setIsUploading(false)
-      setFileStatus("Uploaded");
-      setFileLink(`https://${process.env.NEXT_PUBLIC_PINATA_GATEWAY}/ipfs/${upload.IpfsHash}`);
+    // If the user is not logged in then we can update the required states to share the file and we will only store the file in the IPFS. 
+
+    else{
+      const upload = await pinata.upload.file(file);
+
+      if(upload) {
+        setIsUploading(false)
+        setFileStatus("Uploaded");
+        setFileLink(`https://${process.env.NEXT_PUBLIC_PINATA_GATEWAY}/ipfs/${upload.IpfsHash}`);
+      }
     }
   }
 

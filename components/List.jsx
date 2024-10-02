@@ -27,16 +27,22 @@ export default function List() {
   useEffect(() => {
 
     async function getFiles() {
-        
-        let { data: filedata, error } = await supabase
-        .from('Files')
-        .select('*')
-        .range(0, 3)
-                    
-        // Set the files state with the files we have found.
-        if(filedata) {
-            setFiles(filedata);
-            setIsLoading(false);
+
+        const { data: { user } } = await supabase.auth.getUser();
+
+        if(user) {
+
+            const filedata = await pinata
+            .listFiles()
+            .keyValue("email", user.email)
+            .pageLimit(4);
+          
+            // Set the files state with the files we have found.
+            if(filedata) {
+                console.log("All files : ", filedata); 
+                setFiles(filedata);
+                setIsLoading(false);
+            }
         }
     }
 
@@ -48,11 +54,9 @@ export default function List() {
 
     async function searchFile() {
 
-        let { data : filedata, error } = await supabase
-        .from('Files')
-        .select('*')
-        .range(0, 3)
-        .ilike('file_name', `%${searchText}%`);  // Case-insensitive search
+        const { data: { user } } = await supabase.auth.getUser();
+
+        const filedata = await pinata.listFiles().keyValue("email", user.email).pageLimit(4).name(searchText); 
 
         // If the file that we are searching does not exist then we set the fileFound to false.
         if(filedata.length == 0){
@@ -75,21 +79,11 @@ export default function List() {
   async function deleteFile(fileHash){
 
     // We use the hash of the file to be deleted to filter the files array to see the file being deleted in realtime. 
-    const updatedFilesList = files.filter((f) => f.file_hash !== fileHash);
+    const updatedFilesList = files.filter((f) => f.ipfs_pin_hash !== fileHash);
     setFiles(updatedFilesList);
-
-    // We make a delete request to delete the file whose hash matches with the hash that is passed with the delete request.
-    const { error } = await supabase
-    .from('Files')
-    .delete()
-    .eq('file_hash', fileHash)
      
     // Similarly, we delete(unpin) the file from the IPFS.
     const response = await pinata.unpin([fileHash])
-
-    if(error) {
-        console.log(error);
-    }
 
     if(response) {
         console.log("Response : ",response);
@@ -133,18 +127,18 @@ export default function List() {
                                             <div className={`w-full flex justify-between items-center p-3 px-6 ${index == files.length - 1 ? 'border-none' : 'border-b border-white'}`} key={f.id}>
                 
                                                 {/* Here, target='_blank' opens the link on a new tab instead of opening it on the same tab*/}
-                                                <Link href={`https://${process.env.NEXT_PUBLIC_PINATA_GATEWAY}/ipfs/${f.file_hash}`} className='w-[65%] underline-white' target='_blank'>
-                                                    <p className='text-white w-full overflow-hidden text-ellipsis text-nowrap'>{f.file_name}</p>
+                                                <Link href={`https://${process.env.NEXT_PUBLIC_PINATA_GATEWAY}/ipfs/${f.ipfs_pin_hash}`} className='w-[65%] underline-white' target='_blank'>
+                                                    <p className='text-white w-full overflow-hidden text-ellipsis text-nowrap'>{f.metadata.name}</p>
                                                 </Link>
                     
                                                 <div className='flex gap-4'>
                 
                                                     <ShareAllFiles
-                                                        filename={f.file_name}
-                                                        filelink={`https://${process.env.NEXT_PUBLIC_PINATA_GATEWAY}/ipfs/${f.file_hash}`}
+                                                        filename={f.metadata.name}
+                                                        filelink={`https://${process.env.NEXT_PUBLIC_PINATA_GATEWAY}/ipfs/${f.ipfs_pin_hash}`}
                                                     />
                 
-                                                    <button className='px-2 py-2 bg-black text-white rounded-md font-medium' onClick={() => deleteFile(f.file_hash)}><Trash width={20} height={20}/></button>
+                                                    <button className='px-2 py-2 bg-black text-white rounded-md font-medium' onClick={() => deleteFile(f.ipfs_pin_hash)}><Trash width={20} height={20}/></button>
                                                     
                                                 </div>
                                                     
