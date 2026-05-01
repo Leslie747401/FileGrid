@@ -131,7 +131,7 @@ export default function UploadCard() {
             <div className='flex justify-between'>
 
                     {
-                      file == "" ?
+                      file == null ?
 
                       <AlertDialog>
                         <AlertDialogTrigger className='bg-black text-white text-lg font-medium w-full py-2 rounded-lg flex gap-2 justify-center items-center'>Upload</AlertDialogTrigger>
